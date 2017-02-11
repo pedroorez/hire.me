@@ -1,0 +1,26 @@
+{
+  "name": "hire.me",
+  "version": "1.0.0",
+  "description": "Lean URL Shortener",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedroorez/hire.me.git"
+  },
+  "keywords": [
+    "url",
+    "shortner",
+    "api"
+  ],
+  "author": "Pedro Correa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pedroorez/hire.me/issues"
+  },
+  "homepage": "https://github.com/pedroorez/hire.me#readme",
+  "dependencies": {
+  }
+}
