@@ -4,6 +4,22 @@ const isURLvalid = require('valid-url').isWebUri;
 
 // Connects to Database
 mongoose.connect('mongodb://localhost/jshort');
+
+// Define ShortURl Model
+const Shorturl = mongoose.model('Shorturl',
+  {
+    url: {
+      type: String,
+      required: true,
+    },
+    alias: {
+      type: String,
+      unique: true,
+      dropDups: true,
+      required: true,
+    },
+  });
+
 // Define Shortener URL endpoint
 app.get('/create', (req, res) => {
   if (!req.query.url) {
