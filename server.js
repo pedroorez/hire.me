@@ -2,6 +2,8 @@ const app = require('express')();
 const mongoose = require('mongoose');
 const isURLvalid = require('valid-url').isWebUri;
 
+// Connects to Database
+mongoose.connect('mongodb://localhost/jshort');
 // Define Shortener URL endpoint
 app.get('/create', (req, res) => {
   if (!req.query.url) {
