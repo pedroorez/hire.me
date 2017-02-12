@@ -65,6 +65,14 @@ app.get('/create', (req, res) => {
         })
     });
 });
+
+// Define Retrive URL endpoint
+app.get('/:alias', (req, res) => {
+  Shorturl
+    .findOne({ alias: req.params.alias })
+    .then(entry => res.redirect(entry.url));
+});
+
 });
 
 // Listen Port
