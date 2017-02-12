@@ -91,6 +91,11 @@ app.get('/popular', (req, res) => {
     });
 });
 
+// Index client Endpoint
+app.get('/', (req, res) => {
+  res.sendFile(`${__dirname}/index.html`);
+});
+
 // Define Retrive URL endpoint
 app.get('/:alias', (req, res) => {
   Shorturl

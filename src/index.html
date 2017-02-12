@@ -1,0 +1,76 @@
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<style>
+  body {
+    margin-top: 20px;
+    text-align: center;
+  }
+</style>
+
+<script>
+  var apiHostname = "http://localhost:3000/";
+  var alertHtml = '<div id="alert" class="alert" role="alert"></div>';
+
+  $(document).ready(function(){
+    $('#url').focus(function() {
+      $("#alias").val('');
+      $("#alert-box").html('')
+    })
+
+    $('#hostnamefield').html(apiHostname);
+
+    $("#copyButton").click(function(){
+        alert("button");
+    });
+
+    $("#shortButton").click(function(){
+      var url = $("#url").val();
+      var alias = $("#alias").val();
+      $.get(apiHostname + "create", { url: url, CUSTOM_ALIAS: alias })
+        .done(function(data) {
+          console.log(data);
+          $("#alias").val(data.alias);
+          $("#alert-box").html(alertHtml)
+          $("#alert").addClass("alert-success");
+          $("#alert").html("Success! The Short URL "+apiHostname+data.alias+" was created for " + url);
+        })
+        .fail(function(data) {
+          console.log(data);
+          $("#alert-box").html(alertHtml)
+          $("#alert").addClass("alert-danger");
+          $("#alert").html(data.responseJSON.description);
+        })
+    });
+  })
+</script>
+
+<body>
+<div class="container">
+  <div class="jumbotron center">
+    <h1>jshort</h1>
+
+    <br>
+
+    <div class="form-group">
+      <input type="text" class="form-control input-lg" id="url" placeholder="Source URL">
+    </div>
+    <br>
+
+    <div class="input-group">
+      <span class="input-group-addon" id="hostnamefield"></span>
+      <input type="text" class="form-control" id="alias" aria-describedby="basic-addon3">
+      <span class="input-group-btn">
+        <button class="btn btn-default" id="copyButton" type="button">COPY!</button>
+      </span>
+    </div>
+
+    <br>
+    <span id="alert-box">
+    </span>
+    <br>
+
+    <a class="btn btn-primary btn-lg" id="shortButton" role="button">jshort it</a></p>
+  </div>
+</div>
+</body>
