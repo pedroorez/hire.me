@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/jshort');
 
 // Define ShortURl Model
-module.export = mongoose.model('Shorturl',
+module.exports = mongoose.model('Shorturl',
   {
     url: {
       type: String,
