@@ -1,4 +1,5 @@
 const app = require('express')();
+const mongoose = require('mongoose');
 const isURLvalid = require('valid-url').isWebUri;
 
 // Define Shortener URL endpoint
