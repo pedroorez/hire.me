@@ -23,6 +23,8 @@ const Shorturl = mongoose.model('Shorturl',
 
 // Define Shortener URL endpoint
 app.get('/create', (req, res) => {
+  const requestStart = new Date().getTime();
+
   if (!req.query.url) {
     return res.send('NO URL SENT');
   }
@@ -47,6 +49,9 @@ app.get('/create', (req, res) => {
           res.send({
             alias: result.alias,
             url: `${req.headers.host}/${result.alias}`,
+            statistics: {
+              timeTaken: `${new Date().getTime() - requestStart} ms`,
+            },
           });
         })
     });
