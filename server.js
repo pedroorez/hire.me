@@ -24,6 +24,7 @@ const Shorturl = mongoose.model('Shorturl',
 // Define Shortener URL endpoint
 app.get('/create', (req, res) => {
   const requestStart = new Date().getTime();
+  let urlAlias;
 
   if (!req.query.url) {
     return res.send('NO URL SENT');
@@ -32,7 +33,15 @@ app.get('/create', (req, res) => {
   if (!isURLvalid(req.query.url)) {
     return res.send('URL Non valido');
   }
-  const urlAlias = alias.gen();
+
+  if (req.query.CUSTOM_ALIAS) {
+    if (!alias.check(req.query.CUSTOM_ALIAS)) {
+      return res.send('Alias invalido');
+    }
+    urlAlias = req.query.CUSTOM_ALIAS;
+  } else {
+    urlAlias = alias.gen();
+  }
 
   return Shorturl
     .find({ alias: urlAlias })
