@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start server.js --watch --name jshort"
+    "start": "pm2 start server.js --watch --name jshort",
+    "dockerstart": "pm2-docker server.js --watch --name jshort",
+    "devdockerstart": "npm install; npm run dockerstart"
   },
   "repository": {
     "type": "git",

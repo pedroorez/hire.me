@@ -2,5 +2,15 @@ version: '3'
 services:
   mongodb:
     image: "mongo:3.0.14"
+     ports:
+       - 27017:27017
+
+  jshort:
+    build: .
+    command: ["npm", "run", "devdockerstart"]
     ports:
-      - "27017:27017"
+      - 3000:3000
+    links:
+      - mongodb
+    volumes:
+      - ./:/jshort
