@@ -1,4 +1,5 @@
 const app = require('express')();
+const isURLvalid = require('valid-url').isWebUri;
 
 // Define Shortener URL endpoint
 app.get('/create', (req, res) => {
