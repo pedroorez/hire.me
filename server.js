@@ -62,7 +62,7 @@ app.get('/create', (req, res) => {
               timeTaken: `${new Date().getTime() - requestStart} ms`,
             },
           });
-        })
+        });
     });
 });
 
@@ -71,8 +71,6 @@ app.get('/:alias', (req, res) => {
   Shorturl
     .findOne({ alias: req.params.alias })
     .then(entry => res.redirect(entry.url));
-});
-
 });
 
 // Listen Port
