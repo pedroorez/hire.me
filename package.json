@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/pedroorez/hire.me#readme",
   "dependencies": {
-    "express": "4.14.1"
+    "express": "4.14.1",
+    "valid-url": "^1.0.9"
   },
   "devDependencies": {
     "eslint": "^3.15.0",
