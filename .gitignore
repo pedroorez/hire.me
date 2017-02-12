@@ -2,7 +2,7 @@
 
 # NodeJs
 node_modules
-
+npm-debug.log
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
