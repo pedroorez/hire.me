@@ -4,7 +4,7 @@ const isURLvalid = require('valid-url').isWebUri;
 
 // Custom Libs
 const alias = require('./alias');
-const Shorturl = require('./models/Shorturl');
+const Shorturl = require('./Shorturl');
 
 // Define Shortener URL endpoint
 app.get('/create', (req, res) => {
@@ -57,6 +57,7 @@ app.get('/create', (req, res) => {
         .then((result) => {
           res.send({
             alias: result.alias,
+            visitors: result.visitors,
             url: `${req.headers.host}/${result.alias}`,
             statistics: {
               timeTaken: `${new Date().getTime() - requestStart} ms`,
@@ -69,7 +70,7 @@ app.get('/create', (req, res) => {
 // Define Retrive URL endpoint
 app.get('/:alias', (req, res) => {
   Shorturl
-    .findOne({ alias: req.params.alias })
+    .findOneAndUpdate({ alias: req.params.alias }, { $inc: { visitors: 1 } })
     .then(entry => res.redirect(entry.url))
     .catch(() => {
       res.send({

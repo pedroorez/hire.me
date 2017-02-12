@@ -24,4 +24,8 @@ module.exports = mongoose.model('Shorturl',
       dropDups: true,
       required: true,
     },
+    visitors: {
+      type: Number,
+      default: 0,
+    },
   });
