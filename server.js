@@ -1,25 +1,10 @@
+// Modules
 const app = require('express')();
-const alias = require('./alias');
-const mongoose = require('mongoose');
 const isURLvalid = require('valid-url').isWebUri;
 
-// Connects to Database
-mongoose.connect('mongodb://localhost/jshort');
-
-// Define ShortURl Model
-const Shorturl = mongoose.model('Shorturl',
-  {
-    url: {
-      type: String,
-      required: true,
-    },
-    alias: {
-      type: String,
-      unique: true,
-      dropDups: true,
-      required: true,
-    },
-  });
+// Custom Libs
+const alias = require('./alias');
+const Shorturl = require('./models/Shorturl');
 
 // Define Shortener URL endpoint
 app.get('/create', (req, res) => {
