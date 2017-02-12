@@ -12,16 +12,27 @@ app.get('/create', (req, res) => {
   let urlAlias;
 
   if (!req.query.url) {
-    return res.send('NO URL SENT');
+    return res.send({
+      errCode: '003',
+      description: 'No URL to be shorten provided.',
+    });
   }
 
   if (!isURLvalid(req.query.url)) {
-    return res.send('URL Non valido');
+    return res.send({
+      errCode: '004',
+      url: req.query.url,
+      description: 'URL is not Valid.',
+    });
   }
 
   if (req.query.CUSTOM_ALIAS) {
     if (!alias.check(req.query.CUSTOM_ALIAS)) {
-      return res.send('Alias invalido');
+      return res.send({
+        errCode: '005',
+        customAlias: req.query.CUSTOM_ALIAS,
+        description: 'Invalid CUSTOM_ALIAS.',
+      });
     }
     urlAlias = req.query.CUSTOM_ALIAS;
   } else {
@@ -32,7 +43,11 @@ app.get('/create', (req, res) => {
     .find({ alias: urlAlias })
     .then((search) => {
       if (search.length > 0) {
-        res.send('Already Exist');
+        res.send({
+          errCode: '001',
+          alias: urlAlias,
+          description: 'CUSTOM ALIAS ALREADY EXISTS.',
+        });
       }
       return Shorturl
         .create({
@@ -55,7 +70,14 @@ app.get('/create', (req, res) => {
 app.get('/:alias', (req, res) => {
   Shorturl
     .findOne({ alias: req.params.alias })
-    .then(entry => res.redirect(entry.url));
+    .then(entry => res.redirect(entry.url))
+    .catch(() => {
+      res.send({
+        errCode: '002',
+        alias: req.params.alias,
+        description: 'SHORTENED URL NOT FOUND.',
+      });
+    });
 });
 
 // Listen Port
