@@ -1,5 +1,6 @@
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js"></script>
 
 <style>
   body {
@@ -13,16 +14,15 @@
   var alertHtml = '<div id="alert" class="alert" role="alert"></div>';
 
   $(document).ready(function(){
-    $('#url').focus(function() {
+    new Clipboard('.btn');
+
+    $('#url').keypress(function() {
       $("#alias").val('');
       $("#alert-box").html('')
+      $('#copyButton').prop("disabled",false);
     })
 
     $('#hostnamefield').html(apiHostname);
-
-    $("#copyButton").click(function(){
-        alert("button");
-    });
 
     $("#shortButton").click(function(){
       var url = $("#url").val();
@@ -30,14 +30,16 @@
       $.get(apiHostname + "create", { url: url, CUSTOM_ALIAS: alias })
         .done(function(data) {
           console.log(data);
+          $('#copyButton').prop("disabled",false);
           $("#alias").val(data.alias);
           $("#alert-box").html(alertHtml)
           $("#alert").addClass("alert-success");
-          $("#alert").html("Success! The Short URL "+apiHostname+data.alias+" was created for " + url);
+          $("#alert").html("Success! The Short URL <span id='hue'>"+apiHostname+data.alias+"</span> was created for " + url);
         })
         .fail(function(data) {
           console.log(data);
           $("#alert-box").html(alertHtml)
+          $('#copyButton').prop("disabled",true);
           $("#alert").addClass("alert-danger");
           $("#alert").html(data.responseJSON.description);
         })
@@ -53,7 +55,7 @@
     <br>
 
     <div class="form-group">
-      <input type="text" class="form-control input-lg" id="url" placeholder="Source URL">
+      <input type="text" class="form-control input-lg" id="url" placeholder="http://example.com">
     </div>
     <br>
 
@@ -61,7 +63,7 @@
       <span class="input-group-addon" id="hostnamefield"></span>
       <input type="text" class="form-control" id="alias" aria-describedby="basic-addon3">
       <span class="input-group-btn">
-        <button class="btn btn-default" id="copyButton" type="button">COPY!</button>
+        <button data-clipboard-target="#hue" class="btn btn-default" id="copyButton" disabled=true type="button">COPY!</button>
       </span>
     </div>
 
