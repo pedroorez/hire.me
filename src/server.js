@@ -12,14 +12,14 @@ app.get('/create', (req, res) => {
   let urlAlias;
 
   if (!req.query.url) {
-    return res.send({
+    return res.send(400, {
       errCode: '003',
       description: 'No URL to be shorten provided.',
     });
   }
 
   if (!isURLvalid(req.query.url)) {
-    return res.send({
+    return res.send(400, {
       errCode: '004',
       url: req.query.url,
       description: 'URL is not Valid.',
@@ -28,7 +28,7 @@ app.get('/create', (req, res) => {
 
   if (req.query.CUSTOM_ALIAS) {
     if (!alias.check(req.query.CUSTOM_ALIAS)) {
-      return res.send({
+      return res.send(400, {
         errCode: '005',
         customAlias: req.query.CUSTOM_ALIAS,
         description: 'Invalid CUSTOM_ALIAS.',
@@ -43,7 +43,7 @@ app.get('/create', (req, res) => {
     .find({ alias: urlAlias })
     .then((search) => {
       if (search.length > 0) {
-        res.send({
+        res.send(409, {
           errCode: '001',
           alias: urlAlias,
           description: 'CUSTOM ALIAS ALREADY EXISTS.',
