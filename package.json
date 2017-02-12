@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/pedroorez/hire.me#readme",
   "dependencies": {
+    "bluebird": "^3.4.7",
     "express": "4.14.1",
     "mongoose": "^4.8.2",
     "valid-url": "^1.0.9"

@@ -67,6 +67,30 @@ app.get('/create', (req, res) => {
     });
 });
 
+app.get('/popular', (req, res) => {
+  const requestStart = new Date().getTime();
+  Shorturl
+    .find({})
+    .sort({ visitors: -1 })
+    .limit(10)
+    .exec()
+    .map((entry) => { // eslint-disable-line
+      return {
+        alias: entry.alias,
+        visitors: entry.visitors,
+        url: `${req.headers.host}/${entry.alias}`,
+      };
+    })
+    .then((results) => {
+      res.send({
+        statistics: {
+          timeTaken: `${new Date().getTime() - requestStart} ms`,
+        },
+        results,
+      });
+    });
+});
+
 // Define Retrive URL endpoint
 app.get('/:alias', (req, res) => {
   Shorturl
