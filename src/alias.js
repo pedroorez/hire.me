@@ -1,3 +1,4 @@
+"use strict"; // eslint-disable-line
 const alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('');
 const alphabetLength = alphabet.length;
 
