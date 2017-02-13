@@ -8,6 +8,8 @@ services:
   jshort:
     build: .
     command: ["npm", "run", "devdockerstart"]
+    environment:
+      - HOSTNAME="http://localhost:3000"
     ports:
       - 3000:3000
     links:
