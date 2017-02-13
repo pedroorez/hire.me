@@ -84,7 +84,7 @@ const createEntry = (url, customAlias, callback) => {
   const requestStart = new Date().getTime();
   let urlAlias;
   // Check if URL exists
-  if (!url) {
+  if (url == null || _.isEmpty(url)) {
     callback(null, {
       errCode: '003',
       description: 'No URL to be shorten provided.',
@@ -100,7 +100,7 @@ const createEntry = (url, customAlias, callback) => {
     });
   }
   // check if custom alias is Valid
-  if (customAlias) {
+  if (customAlias != null && !_.isEmpty(customAlias)) {
     if (!AliasLib.check(customAlias)) {
       callback(null, {
         errCode: '005',
@@ -161,19 +161,23 @@ const getEntry = (alias, callback) => {
 };
 
 // Router
-exports.handler = (event, context, callback) => {
+exports.handler = (event, context, callbackOriginal) => {
+  const callback = (ignore, result) => {
+    callbackOriginal(JSON.stringify(result));
+  };
+
   switch (event.endpoint) {
     case '/create':
       createEntry(event.url, event.CUSTOM_ALIAS, callback);
       break;
     case '/popular':
-      callback('not yet made');
+      callback(null, 'not yet made');
       break;
     case '/':
       getEntry(event.alias, callback);
       break;
     default:
-      callback('Something went wrong');
+      callback(null, 'Something went wrong');
       break;
   }
 };
