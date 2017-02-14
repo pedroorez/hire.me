@@ -4,7 +4,7 @@
   "description": "Lean URL Shortener",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tape tests/**/*.js",
     "start": "pm2 start src/server.js --watch --name jshort",
     "dockerstart": "pm2-docker src/server.js --watch --name jshort",
     "devdockerstart": "npm install; npm run dockerstart"
@@ -30,6 +30,7 @@
     "express": "4.14.1",
     "lodash": "^4.17.4",
     "mongoose": "^4.8.2",
+    "tape": "^4.6.3",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
