@@ -120,6 +120,9 @@
                 "type": "string"
               }
             }
+          },
+          "400": {
+            "description": "400 response"
           }
         }
       },

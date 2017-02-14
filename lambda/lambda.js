@@ -152,7 +152,7 @@ const getEntry = (alias, callback) => {
     })
     .catch((err) => {
       console.log(err);
-      callback(null, {
+      callback({
         errCode: '002',
         alias,
         description: 'SHORTENED URL NOT FOUND.',
@@ -174,7 +174,7 @@ exports.handler = (event, context, callbackOriginal) => {
       callback(null, 'not yet made');
       break;
     case '/':
-      getEntry(event.alias, callback);
+      getEntry(event.alias, callbackOriginal);
       break;
     default:
       callback(null, 'Something went wrong');
