@@ -22,6 +22,10 @@ $ docker-compose up
 
 The application will be available on `http://localhost:3000/`
 
+### Running Without Containers
+
+You can also run without containers. Just install locally the dependencies with `npm install`, start a `mongodb` server on port `27017` and run `npm start`.
+
 ## Testing
 
 You can test the application accessing the app container (with `docker exec --it jshort sh`) and running:
@@ -30,7 +34,7 @@ You can test the application accessing the app container (with `docker exec --it
 $ npm test
 ```
 
-If you want to test a remote service change the `APIHOSTNAME` to hostname where the API is located.
+If you want to test a remote service change the `HOSTNAME` and `PORT` to where the API is located.
 
 ## Workflow
 
@@ -66,7 +70,7 @@ Light, fast, no-boilerplate
 Fast, actually so fast you don't need for memcached tools. This project also doesn't needed a relational database.
 
 ### Serverless?
-Serverless allow cheap (pay-per-request), on-demand, 'infinitly'-scalable applications.
+Serverless allows cheap (pay-per-request), on-demand, 'infinitly'-scalable applications.
 
 It's so cheap that the first million requests or so every months are free because of AWS free-tier.
 
