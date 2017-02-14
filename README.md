@@ -1,91 +1,75 @@
-# Hire.me
-Um pequeno projeto para testar suas habilidades como programador.
+# jshort
 
-## Instruções Gerais
+Tiny NodeJS + MongoDB + Docker (+ serverless with AWS Lambda) URL shortener.
 
-1. *Clone* este repositório
-2. Em seu *fork*, atenda os casos de usos especificados e se desejar também os bonus points
-3. Envio um e-mail para rh@bemobi.com.br com a seu Nome e endereço do repositorio.
+## Trying it out!
 
-## Projeto
+You can try the application on the link bellow:
 
-O projeto consiste em reproduzir um encurtador de URL's (apenas sua API), simples e com poucas funções, porém com espaço suficiente para mostrar toda a gama de desenho de soluções, escolha de componentes, mapeamento ORM, uso de bibliotecas de terceiros, uso de GIT e criatividade.
+[http://jshort.s3-website-us-east-1.amazonaws.com/](http://jshort.s3-website-us-east-1.amazonaws.com/)
 
-O projeto consiste de dois casos de uso: 
+I know, I know, this is not a short hostname, but it's serverless! This is waaaaay cooler (and cheaper).
 
-1. Shorten URL
-2. Retrieve URL
+BTW, the first call may be slow. To understand why check my [blog post](https://medium.com/@hollentor/melhores-pr%C3%A1ticas-serverless-com-lambda-e-api-gateway-8b1d62774e8d#.1649mjdve).
 
-### 1 - Shorten URL
-![Short URL](http://i.imgur.com/MFB7VP4.jpg)
+## Up and Running
 
-1. Usuario chama a API passando a URL que deseja encurtar e um parametro opcional **CUSTOM_ALIAS**
-    1. Caso o **CUSTOM_ALIAS** já exista, um erro especifico ```{ERR_CODE: 001, Description:CUSTOM ALIAS ALREADY EXISTS}``` deve ser retornado.
-    2. Toda URL criada sem um **CUSTOM_ALIAS** deve ser reduzida a um novo alias, **você deve sugerir um algoritmo para isto e o porquê.**
-    
-2. O Registro é colocado em um repositório (*Data Store*)
-3. É retornado para o cliente um resultado que contenha a URL encurtada e outros detalhes como
-    1. Quanto tempo a operação levou
-    2. URL Original
+This project runs on docker containers. To start the application run:
 
-Exemplos (Você não precisa seguir este formato):
-
-* Chamada sem CUSTOM_ALIAS
 ```
-PUT http://shortener/create?url=http://www.bemobi.com.br
-
-{
-   "alias": "XYhakR",
-   "url": "http://shortener/u/XYhakR",
-   "statistics": {
-       "time_taken": "10ms",
-   }
-}
+$ docker-compose up
 ```
 
-* Chamada com CUSTOM_ALIAS
-```
-PUT http://shortener/create?url=http://www.bemobi.com.br&CUSTOM_ALIAS=bemobi
+The application will be available on `http://localhost:3000/`
 
-{
-   "alias": "bemobi",
-   "url": "http://shortener/u/bemobi",
-   "statistics": {
-       "time_taken": "12ms",
-   }
-}
+## Testing
+
+You can test the application accessing the app container (with `docker exec --it jshort sh`) and running:
+
+```
+$ npm test
 ```
 
-* Chamada com CUSTOM_ALIAS que já existe
-```
-PUT http://shortener/create?url=http://www.github.com&CUSTOM_ALIAS=bemobi
+If you want to test a remote service change the `APIHOSTNAME` to hostname where the API is located.
 
-{
-   "alias": "bemobi",
-   "err_code": "001",
-   "description": "CUSTOM ALIAS ALREADY EXISTS"
-}
-```
+## Workflow
 
-### 2 - Retrieve URL
-![Retrieve URL](http://i.imgur.com/f9HESb7.jpg)
+Bellow you can check a cool drawing describing the application flow on both Serverfull and Serverless versions.
 
-1. Usuario chama a API passando a URL que deseja acessar
-    1. Caso a **URL** não exista, um erro especifico ```{ERR_CODE: 002, Description:SHORTENED URL NOT FOUND}``` deve ser retornado.
-2. O Registro é lido de um repositório (*Data Store*)
-3. Esta tupla ou registro é mapeado para uma entidade de seu projeto
-3. É retornado para o cliente um resultado que contenha a URL final, a qual ele deve ser redirecionado automaticamente
+They were made on this very neat website: [WebSequenceDiagram](https://www.websequencediagrams.com/)
 
-## Stack Tecnológico
+### Serverfull
 
-Hoje na Bemobi somos fãs do [Spring Framework](https://spring.io/), mas você pode utilizar qualquer linguagem que rode na JVM para realizar este teste.
+![Serverfull](./docs/serverfull.png)
 
-Não há requerimentos específicos de ferramentas de ORM, banco de dados a ser utilizado e requisitos não funcionais como escalabilidade e manutenibilidade, mas não quer dizer que eles não serão avaliados durante a leitura do seu código.
+### Serverless
 
-## Bonus Points
+The serverless implementation is conceptually the same, but since ApiGateway substitutes Express and DynamoDB substitute Mongodb in a non-plugable way the code had to be re-written... ¯\\\_(ツ)\_/¯
 
-1. Crie *testcases* para todas as funcionalidades criadas
-2. Crie um *endpoint* que mostre as dez *URL's* mais acessadas 
-3. Crie um *client* em uma das linguagens que rodam na JVM para chamar sua API
-4. Faça um diagrama de sequencia da implementação feita nos casos de uso (Dica, use o https://www.websequencediagrams.com/)
-5. Monte um deploy da sua solução utilizando containers 
+![Serverfull](./docs/serverless.png)
+
+# Deploy
+
+You could deploy it with a docker on ElasticBeanStalk, or maybe create images for each service (mongod/jshort) and deploying on an EC2. But that you would end nonetheless with idle machines and also wory about creating an auto-scalling policy. That's just ugly.
+
+# Reasons
+
+Here is very quick list of reasons for each technology used.
+
+### Docker?
+Identical environment setup (prod/dev), easy to setup, replicable, beautiful.
+
+### Express?
+Light, fast, no-boilerplate
+
+### MongoDB?
+Fast, actually so fast you don't need for memcached tools. This project also doesn't needed a relational database.
+
+### Serverless?
+Serverless allow cheap (pay-per-request), on-demand, 'infinitly'-scalable applications.
+
+It's so cheap that the first million requests or so every months are free because of AWS free-tier.
+
+### jshort?
+
+¯\\\_(ツ)\_/¯
